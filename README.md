@@ -1,4 +1,4 @@
-# DataCleaning
+# Fifa Data Cleaning
 
 
 So i joined the data cleaning exercise, to clean up this messy dataset.
@@ -377,3 +377,95 @@ SET Hits = CASE
 ![image](https://user-images.githubusercontent.com/48945500/227723308-433dda89-deb1-4e72-827e-06ca63c6e80e.png)
 
 
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+
+14. 
+We will drop some of the columns that are not needed.
+```sql
+ALTER TABLE fifa
+DROP COLUMN photoUrl, playerUrl, Contract, Joined, Loan_Date_End;
+```
+
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+
+15. 
+Take a look at all of the columns and its data types and make changes were needed.
+```sql
+SELECT COLUMN_NAME, DATA_TYPE 
+FROM INFORMATION_SCHEMA.COLUMNS 
+WHERE TABLE_NAME = 'fifa';
+```
+
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+
+16. 
+After taking a look at the column data types we have to change some of the column data types to the required data type.
+```sql
+--Change Height data type to FLOAT
+ALTER TABLE fifa
+ALTER COLUMN Height FLOAT;
+
+--Change Weight data type to FLOAT
+ALTER TABLE fifa
+ALTER COLUMN Weight FLOAT;
+
+--Change Value data type to MONEY
+ALTER TABLE fifa
+ALTER COLUMN Value MONEY;
+
+--Change Wage data type to MONEY
+ALTER TABLE fifa
+ALTER COLUMN Wage MONEY;
+
+--Change Release_Clause data type to MONEY
+ALTER TABLE fifa
+ALTER COLUMN Release_Clause MONEY;
+
+--Change W_F data type to INT
+ALTER TABLE fifa
+ALTER COLUMN W_F INT;
+
+--Change SM data type to INT
+ALTER TABLE fifa
+ALTER COLUMN SM INT;
+
+--Change IR data type to INT
+ALTER TABLE fifa
+ALTER COLUMN IR INT;
+
+--Change Hits data type to INT
+ALTER TABLE fifa
+ALTER COLUMN Hits INT;
+
+--Change Contract_Start data type to INT
+ALTER TABLE fifa
+ALTER COLUMN Contract_Start INT;
+
+--Change Contract_End data type to INT
+ALTER TABLE fifa
+ALTER COLUMN Contract_End INT;
+```
+
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+
+18.
+And lastly we check for duplicates in our dataset using the ID column.
+```sql
+WITH Rowcte AS(
+SELECT *, ROW_NUMBER() OVER (PARTITION BY ID ORDER BY ID) row_num
+FROM dbo.fifa
+)
+SELECT * FROM Rowcte WHERE row_num > 1;
+```
